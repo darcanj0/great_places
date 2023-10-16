@@ -14,10 +14,10 @@ class PlacesPage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(AppRoutes.PLACE_FORM);
               },
-              icon: Icon(Icons.add))
+              icon: const Icon(Icons.add))
         ],
       ),
-      body: Center(
+      body: const Center(
         child: CircularProgressIndicator.adaptive(),
       ),
     );

@@ -1,11 +1,16 @@
-import 'dart:io';
+// ignore_for_file: must_be_immutable
 
+import 'dart:io';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:flutter/material.dart';
 import 'package:great_places/utils/theme_consumer.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
-  const ImageInput({super.key});
+  ImageInput({required this.onSelectImage, super.key});
+
+  void Function(File) onSelectImage;
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -17,9 +22,15 @@ class _ImageInputState extends State<ImageInput> {
     final loadedImage = await ImagePicker()
         .pickImage(source: ImageSource.camera, maxWidth: 800);
     if (loadedImage == null) return;
+
     setState(() {
       selectedImage = File(loadedImage.path);
     });
+
+    final appDir = await syspaths.getApplicationDocumentsDirectory();
+    String fileName = path.basename(selectedImage!.path);
+    final savedImage = await selectedImage!.copy('${appDir.path}/$fileName');
+    widget.onSelectImage(savedImage);
   }
 
   Future<void> selectFromGallery() async {
@@ -29,6 +40,7 @@ class _ImageInputState extends State<ImageInput> {
     setState(() {
       selectedImage = File(loadedImage.path);
     });
+    widget.onSelectImage(selectedImage!);
   }
 
   @override
