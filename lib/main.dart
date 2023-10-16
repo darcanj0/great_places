@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.HOME: (context) => PlacesPage(),
         AppRoutes.PLACE_FORM: (context) => PlaceFormPage()
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }

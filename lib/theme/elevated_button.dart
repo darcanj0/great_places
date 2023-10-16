@@ -20,4 +20,16 @@ class ElevatedButtonStyle {
   Color getOverlayColor(Set<MaterialState> states) {
     return colorScheme.tertiary;
   }
+
+  static ElevatedButtonThemeData createThemeData() {
+    final style = ElevatedButtonStyle();
+    return ElevatedButtonThemeData(
+      style: ButtonStyle(
+        iconColor: MaterialStateColor.resolveWith(style.getIconColor),
+        backgroundColor:
+            MaterialStateColor.resolveWith(style.getBackgroundColor),
+        overlayColor: MaterialStateColor.resolveWith(style.getOverlayColor),
+      ),
+    );
+  }
 }

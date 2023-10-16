@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:great_places/theme/elevated_button.dart';
+import 'package:great_places/theme/floating_button.dart';
 
 class ThemeBuilder {
   static ColorScheme createColorScheme() {
@@ -31,21 +32,11 @@ class ThemeBuilder {
   }
 
   static ThemeData createTheme() {
-    final elevatedButtonStyle = ElevatedButtonStyle();
-
     return ThemeData(
       colorScheme: createColorScheme(),
       textTheme: createTextTheme(),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-          iconColor:
-              MaterialStateColor.resolveWith(elevatedButtonStyle.getIconColor),
-          backgroundColor: MaterialStateColor.resolveWith(
-              elevatedButtonStyle.getBackgroundColor),
-          overlayColor: MaterialStateColor.resolveWith(
-              elevatedButtonStyle.getOverlayColor),
-        ),
-      ),
+      floatingActionButtonTheme: FloatingActionButtonStyle.createThemeData(),
+      elevatedButtonTheme: ElevatedButtonStyle.createThemeData(),
       useMaterial3: true,
     );
   }
