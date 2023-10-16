@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:great_places/components/great_places_list.dart';
 import 'package:great_places/constants/app_routes.dart';
 
 class PlacesPage extends StatelessWidget {
@@ -17,9 +18,7 @@ class PlacesPage extends StatelessWidget {
               icon: const Icon(Icons.add))
         ],
       ),
-      body: const Center(
-        child: CircularProgressIndicator.adaptive(),
-      ),
+      body: GreatPlacesList(),
     );
   }
 }
