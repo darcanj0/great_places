@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:great_places/utils/theme_consumer.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
   const ImageInput({super.key});
@@ -9,6 +12,25 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
+  File? selectedImage;
+  Future<void> takePicture() async {
+    final loadedImage = await ImagePicker()
+        .pickImage(source: ImageSource.camera, maxWidth: 800);
+    if (loadedImage == null) return;
+    setState(() {
+      selectedImage = File(loadedImage.path);
+    });
+  }
+
+  Future<void> selectFromGallery() async {
+    final loadedImage = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, maxWidth: 800);
+    if (loadedImage == null) return;
+    setState(() {
+      selectedImage = File(loadedImage.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -21,9 +43,19 @@ class _ImageInputState extends State<ImageInput> {
               ImagePreview(
                 isLandscape: isLandscape,
                 textTheme: textTheme,
+                file: selectedImage,
               ),
               CustomSpacer(isLandscape: isLandscape),
-              const PictureButton()
+              Column(
+                children: [
+                  PictureButton(
+                    onClick: takePicture,
+                  ),
+                  GalleryButton(
+                    onClick: selectFromGallery,
+                  )
+                ],
+              )
             ],
           )
         : Column(
@@ -31,9 +63,15 @@ class _ImageInputState extends State<ImageInput> {
               ImagePreview(
                 isLandscape: isLandscape,
                 textTheme: textTheme,
+                file: selectedImage,
               ),
               CustomSpacer(isLandscape: isLandscape),
-              const PictureButton()
+              PictureButton(
+                onClick: takePicture,
+              ),
+              GalleryButton(
+                onClick: selectFromGallery,
+              )
             ],
           );
   }
@@ -44,8 +82,10 @@ class ImagePreview extends StatelessWidget {
     super.key,
     required this.isLandscape,
     required this.textTheme,
+    required this.file,
   });
 
+  final File? file;
   final bool isLandscape;
   final TextTheme textTheme;
 
@@ -58,10 +98,15 @@ class ImagePreview extends StatelessWidget {
           border: Border.all(color: Colors.black26),
           borderRadius: BorderRadius.circular(10)),
       alignment: Alignment.center,
-      child: Text(
-        'No image',
-        style: textTheme.labelMedium,
-      ),
+      child: file != null
+          ? FadeInImage(
+              image: FileImage(file!),
+              placeholder: const AssetImage("assets/images/missing_image.png"),
+            )
+          : Text(
+              'No image',
+              style: textTheme.labelMedium,
+            ),
     );
   }
 }
@@ -84,17 +129,44 @@ class CustomSpacer extends StatelessWidget {
 }
 
 class PictureButton extends StatelessWidget with ThemeConsumer {
-  const PictureButton({
+  PictureButton({
     super.key,
+    required this.onClick,
   });
+
+  Future<void> Function() onClick;
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: () {},
+      onPressed: onClick,
       icon: const Icon(Icons.photo_camera),
       label: Text(
         'Take a picture',
+        style: getTextTheme(context)?.bodyMedium?.copyWith(
+              color: getColorScheme(context)?.primary,
+              fontWeight: FontWeight.normal,
+            ),
+      ),
+    );
+  }
+}
+
+class GalleryButton extends StatelessWidget with ThemeConsumer {
+  GalleryButton({
+    super.key,
+    required this.onClick,
+  });
+
+  Future<void> Function() onClick;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: onClick,
+      icon: const Icon(Icons.photo),
+      label: Text(
+        'Select from gallery',
         style: getTextTheme(context)?.bodyMedium?.copyWith(
               color: getColorScheme(context)?.primary,
               fontWeight: FontWeight.normal,

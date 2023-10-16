@@ -23,7 +23,11 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
   late final TextEditingController titleController;
+  void submitForm() {
+    if (_formKey.currentState!.validate()) {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
       appBar: AppBar(
         title: const Text('New Place'),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.save)),
+          IconButton(onPressed: submitForm, icon: const Icon(Icons.save)),
         ],
       ),
       body: SingleChildScrollView(
@@ -41,16 +45,18 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Form(
+                  key: _formKey,
                   child: Column(
                     children: [
                       TextFormField(
+                        textInputAction: TextInputAction.done,
                         controller: titleController,
                         keyboardType: TextInputType.text,
                         onSaved: (newValue) {
                           return;
                         },
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please inform a name for this place';
                           }
                           if (value.length > 50) {
@@ -70,7 +76,7 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
             )),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: submitForm,
         icon: Icon(
           Icons.save,
           color: getColorScheme(context)?.background,
