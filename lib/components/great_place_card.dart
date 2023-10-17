@@ -14,7 +14,7 @@ class GreatPlaceCard extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundImage: FileImage(place.image),
-          radius: 40,
+          radius: 30,
         ),
         title: Text(place.title),
         key: key,

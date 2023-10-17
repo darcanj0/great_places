@@ -18,7 +18,7 @@ class PlacesPage extends StatelessWidget {
               icon: const Icon(Icons.add))
         ],
       ),
-      body: GreatPlacesList(),
+      body: const GreatPlacesList(),
     );
   }
 }
