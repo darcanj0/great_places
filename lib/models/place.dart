@@ -17,11 +17,11 @@ class Place {
 class PlaceCoordinates {
   final double lat;
   final double long;
-  String address;
+  final String address;
 
   bool get nullPlace => lat == 0 && long == 0;
 
-  PlaceCoordinates({
+  const PlaceCoordinates({
     required this.lat,
     required this.long,
     this.address = '',

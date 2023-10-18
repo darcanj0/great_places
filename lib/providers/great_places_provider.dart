@@ -17,11 +17,14 @@ class GreatPlacesProvider extends UUIDAdapter with ChangeNotifier {
     return _places[index];
   }
 
-  Future<void> addPlace(String title, File image) async {
+  Future<void> addPlace(
+    String title,
+    File image,
+  ) async {
     final place = Place(
         id: genId(),
         title: title,
-        location: PlaceCoordinates(lat: 0.0, long: 0.0),
+        location: const PlaceCoordinates(lat: 0.0, long: 0.0),
         image: image);
     _places.add(place);
 
@@ -40,7 +43,7 @@ class GreatPlacesProvider extends UUIDAdapter with ChangeNotifier {
       final place = Place(
         id: data['id'] as String,
         title: data['title'] as String,
-        location: PlaceCoordinates(lat: 0, long: 0),
+        location: const PlaceCoordinates(lat: 0, long: 0),
         image: File(data['image'] as String),
       );
       _places.add(place);

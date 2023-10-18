@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:great_places/models/place.dart';
+import 'package:great_places/pages/map_page.dart';
 import 'package:great_places/providers/location_provider.dart';
 import 'package:great_places/utils/theme_consumer.dart';
 import 'package:provider/provider.dart';
@@ -12,14 +13,14 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> with ThemeConsumer {
-  PlaceCoordinates coordinates = PlaceCoordinates(lat: 0, long: 0);
+  PlaceCoordinates coordinates = const PlaceCoordinates(lat: 0, long: 0);
   String staticMapUrl = '';
   bool isLoadingLocation = false;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<LocationProvider>(builder: (ctx, locationProvider, child) {
-      void getLocation() {
+      void getStaticLocation() {
         locationProvider.getCurrentLocation().then((locationData) {
           setState(() {
             isLoadingLocation = false;
@@ -39,7 +40,7 @@ class _LocationInputState extends State<LocationInput> with ThemeConsumer {
         });
         locationProvider.checkPermissionStatus().then((enabled) {
           if (enabled) {
-            getLocation();
+            getStaticLocation();
           } else {
             ScaffoldMessenger.of(ctx).showSnackBar(
               const SnackBar(
@@ -51,6 +52,17 @@ class _LocationInputState extends State<LocationInput> with ThemeConsumer {
             });
           }
         });
+      }
+
+      Future<void> selectFromMap() async {
+        final data = await Navigator.of(context)
+            .push<PlaceCoordinates?>(MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const MapPage(),
+        ));
+        if (data == null) return;
+        print(data.lat);
+        print(data.long);
       }
 
       return Column(
@@ -93,7 +105,7 @@ class _LocationInputState extends State<LocationInput> with ThemeConsumer {
                 ),
               ),
               TextButton.icon(
-                onPressed: () {},
+                onPressed: selectFromMap,
                 icon: const Icon(Icons.map),
                 label: Text(
                   'Select from map',

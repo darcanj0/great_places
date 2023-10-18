@@ -96,7 +96,7 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
                       const SizedBox(height: 20),
                       ImageInput(onSelectImage: selectImage),
                       const SizedBox(height: 20),
-                      LocationInput(),
+                      const LocationInput(),
                       const SizedBox(height: 20),
                     ],
                   ),
