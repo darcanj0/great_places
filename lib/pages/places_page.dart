@@ -26,25 +26,28 @@ class _PlacesPageState extends State<PlacesPage> {
               icon: const Icon(Icons.add))
         ],
       ),
-      body: FutureBuilder(
-          future: context.read<GreatPlacesProvider>().loadPlaces(),
-          builder: (ctx, snapshot) {
-            return snapshot.connectionState == ConnectionState.waiting
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Consumer<GreatPlacesProvider>(
-                    builder: (ctx, placesProvider, child) => ListView.builder(
-                          itemCount: placesProvider.placesCount,
-                          itemBuilder: (_, index) {
-                            final place = placesProvider.places[index];
-                            return GreatPlaceCard(
-                              place: place,
-                              key: Key(place.id),
-                            );
-                          },
-                        ));
-          }),
+      body: RefreshIndicator.adaptive(
+        onRefresh: context.read<GreatPlacesProvider>().loadPlaces,
+        child: FutureBuilder(
+            future: context.read<GreatPlacesProvider>().loadPlaces(),
+            builder: (ctx, snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Consumer<GreatPlacesProvider>(
+                      builder: (ctx, placesProvider, child) => ListView.builder(
+                            itemCount: placesProvider.placesCount,
+                            itemBuilder: (_, index) {
+                              final place = placesProvider.places[index];
+                              return GreatPlaceCard(
+                                place: place,
+                                key: Key(place.id),
+                              );
+                            },
+                          ));
+            }),
+      ),
     );
   }
 }

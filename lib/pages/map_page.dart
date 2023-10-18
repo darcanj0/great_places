@@ -48,7 +48,15 @@ class _MapPageState extends State<MapPage> {
       body: GoogleMap(
         onTap: widget.isReadOnly ? null : selectPlace,
         markers: selectedPlace == null
-            ? {}
+            ? {
+                Marker(
+                  markerId: const MarkerId('initial'),
+                  position: LatLng(
+                    widget.initialPlace.lat,
+                    widget.initialPlace.long,
+                  ),
+                )
+              }
             : {
                 Marker(
                   markerId: const MarkerId('p1'),
