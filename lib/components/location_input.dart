@@ -64,7 +64,7 @@ class _LocationInputState extends State<LocationInput> with ThemeConsumer {
         final data = await Navigator.of(context)
             .push<PlaceCoordinates?>(MaterialPageRoute(
           fullscreenDialog: true,
-          builder: (context) => const MapPage(),
+          builder: (context) => const MapPage(title: 'Select From Map'),
         ));
         if (data == null) return;
         widget.onSelectCoordinates(data);

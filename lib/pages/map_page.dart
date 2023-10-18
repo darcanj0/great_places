@@ -4,6 +4,7 @@ import 'package:great_places/models/place.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({
+    required this.title,
     this.initialPlace =
         const PlaceCoordinates(lat: 37.422131, long: -122.084801),
     this.isReadOnly = false,
@@ -11,6 +12,7 @@ class MapPage extends StatefulWidget {
   });
   final bool isReadOnly;
   final PlaceCoordinates initialPlace;
+  final String title;
 
   @override
   State<MapPage> createState() => _MapPageState();
@@ -36,7 +38,7 @@ class _MapPageState extends State<MapPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select From Map'),
+        title: Text(widget.title),
         actions: [
           if (!widget.isReadOnly && selectedPlace != null)
             IconButton(

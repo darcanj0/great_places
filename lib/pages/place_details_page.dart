@@ -52,6 +52,7 @@ class PlaceDetailsPage extends StatelessWidget with ThemeConsumer {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => MapPage(
+                        title: '${place.title} Location',
                         isReadOnly: true,
                         initialPlace: place.location,
                       ),

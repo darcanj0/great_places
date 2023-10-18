@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       routes: {
         AppRoutes.HOME: (context) => const PlacesPage(),
         AppRoutes.PLACE_FORM: (context) => const PlaceFormPage(),
-        AppRoutes.MAP: (context) => const MapPage(),
+        AppRoutes.MAP: (context) => const MapPage(title: 'Select From Map'),
         AppRoutes.PLACE_DETAILS: (context) => const PlaceDetailsPage()
       },
       debugShowCheckedModeBanner: false,
