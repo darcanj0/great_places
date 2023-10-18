@@ -53,5 +53,7 @@
 	<string>Take photo from camera.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used for audio capture provided by image picker.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Provide location information for your places.</string>
 </dict>
 </plist>

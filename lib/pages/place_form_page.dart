@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:great_places/components/location_input.dart';
 import 'package:great_places/providers/great_places_provider.dart';
 import 'package:great_places/utils/theme_consumer.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +95,8 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
                       ),
                       const SizedBox(height: 20),
                       ImageInput(onSelectImage: selectImage),
+                      const SizedBox(height: 20),
+                      LocationInput(),
                       const SizedBox(height: 20),
                     ],
                   ),

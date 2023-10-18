@@ -117,7 +117,7 @@ class ImagePreview extends StatelessWidget {
             )
           : Text(
               'No image',
-              style: textTheme.labelMedium,
+              style: textTheme.labelLarge,
             ),
     );
   }
