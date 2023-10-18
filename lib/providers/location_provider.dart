@@ -39,7 +39,7 @@ class LocationProvider with ChangeNotifier {
     return true;
   }
 
-  Future<LocationData> getCurrentLocation() async {
+  Future<LocationData> getCurrentCoordinates() async {
     final data = await location.getLocation();
     return data;
   }

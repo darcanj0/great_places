@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:great_places/models/place.dart';
 import 'package:great_places/pages/map_page.dart';
@@ -6,10 +8,12 @@ import 'package:great_places/utils/theme_consumer.dart';
 import 'package:provider/provider.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({super.key});
+  LocationInput({required this.onSelectCoordinates, super.key});
 
   @override
   State<LocationInput> createState() => _LocationInputState();
+
+  void Function(PlaceCoordinates) onSelectCoordinates;
 }
 
 class _LocationInputState extends State<LocationInput> with ThemeConsumer {
@@ -20,27 +24,29 @@ class _LocationInputState extends State<LocationInput> with ThemeConsumer {
   @override
   Widget build(BuildContext context) {
     return Consumer<LocationProvider>(builder: (ctx, locationProvider, child) {
-      void getStaticLocation() {
-        locationProvider.getCurrentLocation().then((locationData) {
+      void getStaticCoordinates() {
+        locationProvider.getCurrentCoordinates().then((locationData) {
+          final data = PlaceCoordinates(
+            lat: locationData.latitude!,
+            long: locationData.longitude!,
+          );
+          widget.onSelectCoordinates(data);
           setState(() {
             isLoadingLocation = false;
-            coordinates = PlaceCoordinates(
-              lat: locationData.latitude!,
-              long: locationData.longitude!,
-            );
+            coordinates = data;
             staticMapUrl =
                 locationProvider.generateLocationPreviewImage(coordinates);
           });
         });
       }
 
-      void tryGetStaticLocation() {
+      void tryGetStaticCoordinates() {
         setState(() {
           isLoadingLocation = true;
         });
         locationProvider.checkPermissionStatus().then((enabled) {
           if (enabled) {
-            getStaticLocation();
+            getStaticCoordinates();
           } else {
             ScaffoldMessenger.of(ctx).showSnackBar(
               const SnackBar(
@@ -61,8 +67,16 @@ class _LocationInputState extends State<LocationInput> with ThemeConsumer {
           builder: (context) => const MapPage(),
         ));
         if (data == null) return;
-        print(data.lat);
-        print(data.long);
+        widget.onSelectCoordinates(data);
+
+        setState(() {
+          coordinates = PlaceCoordinates(
+            lat: data.lat,
+            long: data.long,
+          );
+          staticMapUrl =
+              locationProvider.generateLocationPreviewImage(coordinates);
+        });
       }
 
       return Column(
@@ -94,7 +108,7 @@ class _LocationInputState extends State<LocationInput> with ThemeConsumer {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton.icon(
-                onPressed: tryGetStaticLocation,
+                onPressed: tryGetStaticCoordinates,
                 icon: const Icon(Icons.location_on),
                 label: Text(
                   'Current Location',

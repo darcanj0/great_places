@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:great_places/components/location_input.dart';
+import 'package:great_places/models/place.dart';
 import 'package:great_places/providers/great_places_provider.dart';
+import 'package:great_places/utils/exception_feedback_handler.dart';
 import 'package:great_places/utils/theme_consumer.dart';
 import 'package:provider/provider.dart';
 
@@ -30,30 +32,40 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
 
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController titleController;
-  File? selectedImage;
 
+  File? selectedImage;
   void selectImage(File picked) {
     setState(() {
       selectedImage = picked;
     });
   }
 
+  PlaceCoordinates? coordinates;
+  void selectCoordinates(PlaceCoordinates picked) {
+    setState(() {
+      coordinates = picked;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    void submitForm() {
+    Future<void> submitForm() async {
       if (_formKey.currentState!.validate()) {
         if (selectedImage == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('You must select an image for your place!'),
-              duration: Duration(seconds: 2),
-            ),
-          );
+          ExceptionFeedbackHandler.withSnackbar(
+              context, 'You must select an image for your place!');
           return;
         }
-        context
-            .read<GreatPlacesProvider>()
-            .addPlace(titleController.text, selectedImage as File);
+        if (coordinates == null) {
+          ExceptionFeedbackHandler.withSnackbar(
+              context, 'You must select a location for your place!');
+          return;
+        }
+        context.read<GreatPlacesProvider>().addPlace(
+              titleController.text,
+              selectedImage as File,
+              coordinates as PlaceCoordinates,
+            );
         Navigator.of(context).pop();
       }
     }
@@ -61,9 +73,6 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Place'),
-        actions: [
-          IconButton(onPressed: submitForm, icon: const Icon(Icons.save)),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -96,7 +105,7 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
                       const SizedBox(height: 20),
                       ImageInput(onSelectImage: selectImage),
                       const SizedBox(height: 20),
-                      const LocationInput(),
+                      LocationInput(onSelectCoordinates: selectCoordinates),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -106,13 +115,13 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: submitForm,
-        icon: Icon(
-          Icons.save,
-          color: getColorScheme(context)?.background,
-        ),
         label: Text(
           'Save Place',
           style: getTextTheme(context)?.bodyMedium,
+        ),
+        icon: Icon(
+          Icons.save,
+          color: getColorScheme(context)?.background,
         ),
       ),
     );

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:great_places/utils/theme_consumer.dart';
 
 import '../models/place.dart';
 
-class GreatPlaceCard extends StatelessWidget {
+class GreatPlaceCard extends StatelessWidget with ThemeConsumer {
   const GreatPlaceCard({required this.place, super.key});
 
   final Place place;
@@ -16,7 +17,14 @@ class GreatPlaceCard extends StatelessWidget {
           backgroundImage: FileImage(place.image),
           radius: 30,
         ),
-        title: Text(place.title),
+        title: Text(
+          place.title,
+          style: getTextTheme(context)?.headlineMedium,
+        ),
+        subtitle: Text(
+          place.address.toDisplay,
+          style: getTextTheme(context)?.labelSmall,
+        ),
         key: key,
       ),
     );

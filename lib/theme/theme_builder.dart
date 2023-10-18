@@ -12,6 +12,16 @@ class ThemeBuilder {
   static TextTheme createTextTheme() {
     final colorScheme = createColorScheme();
     final TextTheme originalTextTheme = const TextTheme().copyWith(
+      headlineMedium: TextStyle(
+        color: colorScheme.onBackground,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+      ),
+      labelSmall: TextStyle(
+        color: colorScheme.onBackground,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
       labelMedium: TextStyle(
         color: colorScheme.onBackground,
         fontSize: 18,
