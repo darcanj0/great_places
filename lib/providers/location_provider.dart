@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:great_places/models/place.dart';
 import 'package:location/location.dart';
 
 class LocationProvider with ChangeNotifier {
@@ -8,7 +9,7 @@ class LocationProvider with ChangeNotifier {
 
   Future<bool> checkServiceStatus() async {
     _serviceEnabled = await location.serviceEnabled();
-    if (_serviceEnabled) {
+    if (!_serviceEnabled) {
       await requestService();
     }
     return _serviceEnabled;
@@ -38,13 +39,14 @@ class LocationProvider with ChangeNotifier {
     return true;
   }
 
-  Future<LocationData?> getCurrentLocation() async {
-    bool hasPermission = await checkPermissionStatus();
-    if (!hasPermission) return null;
+  Future<LocationData> getCurrentLocation() async {
     final data = await location.getLocation();
-    print(data.altitude);
-    print(data.latitude);
-    print(data.longitude);
     return data;
+  }
+
+  static const googleApiKey = 'AIzaSyABvoXH2o3dDUouGLHfAeIxohtfjdCvJHo';
+
+  String generateLocationPreviewImage(PlaceCoordinates coordinates) {
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=${coordinates.lat},${coordinates.long}&zoom=14&size=600x300&maptype=roadmap&markers=color:red%7Clabel:P%7C${coordinates.lat},${coordinates.long}&key=$googleApiKey';
   }
 }

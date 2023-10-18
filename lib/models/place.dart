@@ -19,6 +19,8 @@ class PlaceCoordinates {
   final double long;
   String address;
 
+  bool get nullPlace => lat == 0 && long == 0;
+
   PlaceCoordinates({
     required this.lat,
     required this.long,
