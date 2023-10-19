@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:great_places/components/location_input.dart';
+import 'package:great_places/components/scroll_wrapper.dart';
 import 'package:great_places/models/place.dart';
 import 'package:great_places/providers/great_places_provider.dart';
 import 'package:great_places/utils/exception_feedback_handler.dart';
@@ -75,43 +76,45 @@ class _PlaceFormPageState extends State<PlaceFormPage> with ThemeConsumer {
         title: const Text('New Place'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        textInputAction: TextInputAction.done,
-                        controller: titleController,
-                        keyboardType: TextInputType.text,
-                        onSaved: (newValue) {
-                          return;
-                        },
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Please inform a name for this place';
-                          }
-                          if (value.length > 50) {
-                            return 'Please inform a shorter name (50)';
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(labelText: 'Title'),
-                      ),
-                      const SizedBox(height: 20),
-                      ImageInput(onSelectImage: selectImage),
-                      const SizedBox(height: 20),
-                      LocationInput(onSelectCoordinates: selectCoordinates),
-                      const SizedBox(height: 20),
-                    ],
+        child: ScrollWrapper(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          textInputAction: TextInputAction.done,
+                          controller: titleController,
+                          keyboardType: TextInputType.text,
+                          onSaved: (newValue) {
+                            return;
+                          },
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please inform a name for this place';
+                            }
+                            if (value.length > 50) {
+                              return 'Please inform a shorter name (50)';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(labelText: 'Title'),
+                        ),
+                        const SizedBox(height: 20),
+                        ImageInput(onSelectImage: selectImage),
+                        const SizedBox(height: 20),
+                        LocationInput(onSelectCoordinates: selectCoordinates),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )),
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: submitForm,

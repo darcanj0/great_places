@@ -1,16 +1,39 @@
-# great_places
 
-A new Flutter project.
+# Great Places
 
-## Getting Started
+An app where you can save your favorite spots with location and image data
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## What I learned
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Use of phones' native SQLite
+- Use of local storage
+- Use of camera and files from gallery
+- Use of Google Maps APIs
+- Declare and request permissions in devices
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Issues!!!
+
+The media selection is not avaliable in web platform yet!
+The live demo below wont have this feature for now.
+
+
+## Live demo
+
+https://great-places-d576e.web.app/
+
+
+## Roadmap
+
+- Add auth
+
+- Migrate local storage to firebase
+
+- Implement common social network features (likes, comments, share)
+
+
+## Autores
+
+- [@darcanj0](https://www.github.com/darcanj0)
+

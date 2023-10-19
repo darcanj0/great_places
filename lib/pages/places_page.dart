@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:great_places/components/scroll_wrapper.dart';
 import 'package:great_places/constants/app_routes.dart';
 import 'package:great_places/providers/great_places_provider.dart';
 import 'package:provider/provider.dart';
@@ -36,15 +37,17 @@ class _PlacesPageState extends State<PlacesPage> {
                       child: CircularProgressIndicator(),
                     )
                   : Consumer<GreatPlacesProvider>(
-                      builder: (ctx, placesProvider, child) => ListView.builder(
-                            itemCount: placesProvider.placesCount,
-                            itemBuilder: (_, index) {
-                              final place = placesProvider.places[index];
-                              return GreatPlaceCard(
-                                place: place,
-                                key: Key(place.id),
-                              );
-                            },
+                      builder: (ctx, placesProvider, child) => ScrollWrapper(
+                            child: ListView.builder(
+                              itemCount: placesProvider.placesCount,
+                              itemBuilder: (_, index) {
+                                final place = placesProvider.places[index];
+                                return GreatPlaceCard(
+                                  place: place,
+                                  key: Key(place.id),
+                                );
+                              },
+                            ),
                           ));
             }),
       ),
